@@ -1,0 +1,12 @@
+openapi: 3.0.1
+info:
+  description: Title
+  title: Title
+  version: 1.0.0
+servers:
+- url: https://www/
+paths: {}
+components:
+  schemas: {}
+x-original-swagger-version: "2.0"
+

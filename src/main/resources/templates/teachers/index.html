@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Index</title>
+</head>
+<body>
+
+<div th:each="tea : ${teachers}">
+  <a th:href="@{/admin/{id}(id=${tea.getId()})}"
+     th:text="${tea.getName()}">user</a>
+</div>
+
+<br/>
+<hr/>
+
+<a href="/admin/new">Добавить учителя</a>
+
+</body>
+</html>
