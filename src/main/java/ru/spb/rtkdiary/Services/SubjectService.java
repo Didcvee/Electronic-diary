@@ -1,14 +1,10 @@
 package ru.spb.rtkdiary.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.spb.rtkdiary.DTO.SubjectsDTO;
-import ru.spb.rtkdiary.Repo.SpringDataJpaRepo.SubjectsRepository;
-import ru.spb.rtkdiary.Request.GroupRequest;
-import ru.spb.rtkdiary.Request.SubjectRequest;
-import ru.spb.rtkdiary.models.Group;
+import ru.spb.rtkdiary.Repo.SubjectsRepository;
 import ru.spb.rtkdiary.models.Subjects;
 
 import javax.persistence.EntityManager;
@@ -29,24 +25,29 @@ public class SubjectService {
         this.subjectsRepository = subjectsRepository;
     }
     @Transactional
-    public void save(SubjectRequest subjectRequest){
-        subjectsRepository.save(new Subjects(subjectRequest.getName()));
+    public void save(SubjectsDTO subjectsDTO){
+        subjectsRepository.save(new Subjects(subjectsDTO.getName())); //
     }
     public List<SubjectsDTO> findAll(){
         List<SubjectsDTO> list = new ArrayList<>();
         subjectsRepository.findAll().forEach(subjects -> list
                 .add(new SubjectsDTO(subjects.getId(),subjects.getName())));
-        return list;
+        return list; //
     }
     public SubjectsDTO findById(int id){
         Subjects subjects = subjectsRepository.findById(id).orElse(null);
-        return new SubjectsDTO(subjects.getId(), subjects.getName());
+        return new SubjectsDTO(subjects.getId(), subjects.getName()); //
     }
 
     @Transactional
-    public void update(SubjectRequest subjectRequest){
-        Subjects subjects = entityManager.find(Subjects.class,subjectRequest.getId());
-        subjects.setName(subjectRequest.getName());
-        entityManager.merge(subjects);
+    public void update(SubjectsDTO subjectsDTO){
+        Subjects subjects = entityManager.find(Subjects.class, subjectsDTO.getId());
+        subjects.setName(subjectsDTO.getName());
+        entityManager.merge(subjects); //
+    }
+    @Transactional
+    public void deleteSubject(SubjectsDTO subjectsDTO){
+        entityManager.createNativeQuery("delete from subjects where id=:id").setParameter("id",subjectsDTO.getId()).executeUpdate();
+        //
     }
 }

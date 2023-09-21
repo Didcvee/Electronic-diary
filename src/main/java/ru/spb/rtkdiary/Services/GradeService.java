@@ -5,13 +5,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.spb.rtkdiary.DTO.GradeDTO;
 import ru.spb.rtkdiary.models.Grade;
 import ru.spb.rtkdiary.models.Peoples;
-import ru.spb.rtkdiary.utils.AllDate;
 import ru.spb.rtkdiary.utils.StudentDateWithGrades;
+import ru.spb.rtkdiary.utils.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,11 +40,11 @@ public class GradeService {
                 Peoples peoples = entityManager.find(Peoples.class,gradeDTO.getPeoplesId());
                 try {
                     entityManager.persist(new Grade(gradeDTO.getId(), gradeDTO.getTeachersId(), gradeDTO.getSubjectsId(),
-                            gradeDTO.getGroupId(), new Date(dateFormat.parse(gradeDTO.getDate()).getTime()), gradeDTO.getGrade(), peoples));
+                            gradeDTO.getGroupId(), new java.sql.Date(dateFormat.parse(gradeDTO.getDate()).getTime()), gradeDTO.getGrade(), peoples));
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
-            }
+            } //
         }});
     }
     public StudentDateWithGrades findForStudent(int id, int month, int year){
@@ -56,6 +55,6 @@ public class GradeService {
         List<GradeDTO> gradeDTOList = new ArrayList<>();
         objects.forEach(objects1 -> gradeDTOList.add(new GradeDTO((Integer) objects1[0], (Integer) objects1[1],(String) objects1[3],
                 (Integer) objects1[4],(String) objects1[2])));
-        return new StudentDateWithGrades(AllDate.getDatesByMonthYear(year, month), gradeDTOList);
+        return new StudentDateWithGrades(Date.getDatesByMonthYear(year, month), gradeDTOList); //
     }
 }

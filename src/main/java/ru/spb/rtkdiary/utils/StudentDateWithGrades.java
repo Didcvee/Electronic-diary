@@ -8,6 +8,7 @@ public class StudentDateWithGrades {
     private List<String> dates;
     private List<GradeDTO> gradeDTOList;
 
+
     public StudentDateWithGrades() {
     }
 

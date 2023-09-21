@@ -1,23 +1,25 @@
-package ru.spb.rtkdiary.Repo.HibernateRepo;
+package ru.spb.rtkdiary.Repo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import ru.spb.rtkdiary.DAO.TeachersDTO;
 import ru.spb.rtkdiary.DTO.GradeDTO;
 import ru.spb.rtkdiary.DTO.StudentDTO;
-import ru.spb.rtkdiary.Repo.SpringDataJpaRepo.GradeRepository;
-import ru.spb.rtkdiary.Request.GradeRequest;
-import ru.spb.rtkdiary.models.*;
+import ru.spb.rtkdiary.models.Grade;
+import ru.spb.rtkdiary.models.Group;
+import ru.spb.rtkdiary.models.Peoples;
+import ru.spb.rtkdiary.models.Subjects;
 import ru.spb.rtkdiary.utils.Date;
 import ru.spb.rtkdiary.utils.GroupWithSubjects;
 import ru.spb.rtkdiary.utils.ListWithStudentHisGradeAndDatesOfThisTeacher;
-import ru.spb.rtkdiary.utils.WrapperSubjectsDTOAndGroupDTO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +28,11 @@ public class TeacherRepository {
     @PersistenceContext
     private EntityManager entityManager;
     private final GradeRepository gradeRepository;
-
     @Autowired
     public TeacherRepository(GradeRepository gradeRepository) {
         this.gradeRepository = gradeRepository;
     }
+
 
     public List<GroupWithSubjects> getPackageWithGroupsAndSubjects(@Param("Teacher Id") int teacherId){
         String sql = "select distinct g.id as groupId, g.name as groupName, s.name as subjectName, s.id as subjectId " +
@@ -45,22 +47,7 @@ public class TeacherRepository {
         return groupWithSubjectsList;
     }
 
-    public TeachersDTO getTeacherDtoById(int teacherId) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<TeachersDTO> criteriaQuery = criteriaBuilder.createQuery(TeachersDTO.class);
-        Root<Teachers> teacherRoot = criteriaQuery.from(Teachers.class);
-        // Выбор полей для TeacherDto
-        criteriaQuery.select(criteriaBuilder.construct(
-                TeachersDTO.class,
-                teacherRoot.get("id"),
-                teacherRoot.get("name")
-        ));
-        // Условие для выборки по id
-        criteriaQuery.where(criteriaBuilder.equal(teacherRoot.get("id"), teacherId));
 
-        // Выполняем запрос и возвращаем результат
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
-    }
 
     public ListWithStudentHisGradeAndDatesOfThisTeacher getGradesByTeacherSubjectAndGroup(int teacherId, int subjectId, int groupId, int year, int month) {
         Query query1 = entityManager.createNativeQuery("select w.value as value from week w join tea_sub_group tsg on w.id=tsg.week_id where tsg.tea_id=:tea and tsg.sub_id=:sub and tsg.group_id=:gro");
@@ -70,11 +57,11 @@ public class TeacherRepository {
         List<Integer> weekDays = query1.getResultList();
         List<String> dates = Date.getDates(month,year,weekDays);
 
-        List<GradeRequest> gradeRequestList = new ArrayList<>();
+        List<GradeDTO> gradeRequestList = new ArrayList<>();
         List<Grade> gradeList = gradeRepository.findGradeByTeachersIdAndSubjectsIdAndGroupIdAndDateYearAndDateMonth(teacherId,subjectId,
                 groupId,year,month);
 
-        gradeList.forEach(grade -> gradeRequestList.add(new GradeRequest(grade.getId(),grade.getGrade(),grade.getPeoples().getId(),grade.getDate().toString())));
+        gradeList.forEach(grade -> gradeRequestList.add(new GradeDTO(grade.getId(),grade.getGrade(),grade.getPeoples().getId(),grade.getDate().toString())));
         CriteriaBuilder criteriaBuilder1 = entityManager.getCriteriaBuilder();
         CriteriaQuery<StudentDTO> criteriaQuery1 = criteriaBuilder1.createQuery(StudentDTO.class);
         Root<Peoples> root1 = criteriaQuery1.from(Peoples.class);
@@ -90,12 +77,6 @@ public class TeacherRepository {
         return new ListWithStudentHisGradeAndDatesOfThisTeacher(gradeRequestList,dates,studentDTOList);
     }
 
-    public Teachers findByIdWithSubjectsAndGroups(int teacherId){
-        String query = "SELECT distinct t FROM Teachers t JOIN FETCH t.subjects join t.weekDays WHERE t.id = :teacherId";
-        Teachers teacher = entityManager.createQuery(query, Teachers.class)
-                .setParameter("teacherId", teacherId)
-                .getSingleResult();
-        return teacher;
-    }
+
 }
 

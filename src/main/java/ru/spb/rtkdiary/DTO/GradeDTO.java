@@ -58,20 +58,6 @@ public class GradeDTO {
         this.grade = grade;
     }
 
-    @Override
-    public String toString() {
-        return "GradeDTO{" +
-                "id=" + id +
-                ", grade=" + grade +
-                ", peoplesId=" + peoplesId +
-                ", groupId=" + groupId +
-                ", teachersId=" + teachersId +
-                ", subjectsId=" + subjectsId +
-                ", date='" + date + '\'' +
-                ", datesOfThisTeacher=" + datesOfThisTeacher +
-                '}';
-    }
-
     public int getGroupId() {
         return groupId;
     }
@@ -115,13 +101,10 @@ public class GradeDTO {
         this.date = date;
     }
 
-    public List<String> datesOfThisTeacher;
-
-    public List<String> getDatesOfThisTeacher() {
-        return datesOfThisTeacher;
-    }
-
-    public void setDatesOfThisTeacher(List<String> datesOfThisTeacher) {
-        this.datesOfThisTeacher = datesOfThisTeacher;
+    public GradeDTO(int id, int grade, int peoplesId, String date) {
+        this.id = id;
+        this.grade = grade;
+        this.peoplesId = peoplesId;
+        this.date = date;
     }
 }

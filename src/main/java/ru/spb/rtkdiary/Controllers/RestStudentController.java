@@ -30,7 +30,7 @@ public class RestStudentController {
     public ResponseEntity<StudentDateWithGrades> findAllDateByMonthAndGradesInThisMonthAndYear(@PathVariable("id") int id,
                                                                                                @PathVariable("month") int month,
                                                                                                @PathVariable("year") int year){
-        return ResponseEntity.ok().body(gradeService.findForStudent(id, month, year));
+        return ResponseEntity.ok().body(gradeService.findForStudent(id, month, year)); //
     }
 
 }

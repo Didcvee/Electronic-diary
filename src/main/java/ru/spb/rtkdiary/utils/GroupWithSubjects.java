@@ -9,6 +9,7 @@ public class GroupWithSubjects {
     private Subjects subjects;
     private Group group;
 
+
     public GroupWithSubjects() {
     }
 

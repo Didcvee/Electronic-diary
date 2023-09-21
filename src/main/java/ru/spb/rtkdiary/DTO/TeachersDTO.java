@@ -1,6 +1,5 @@
-package ru.spb.rtkdiary.DAO;
+package ru.spb.rtkdiary.DTO;
 
-import org.springframework.stereotype.Component;
 import ru.spb.rtkdiary.models.Group;
 import ru.spb.rtkdiary.models.Subjects;
 import ru.spb.rtkdiary.models.WeekDays;

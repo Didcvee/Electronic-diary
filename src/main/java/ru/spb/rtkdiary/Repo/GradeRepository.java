@@ -1,9 +1,8 @@
-package ru.spb.rtkdiary.Repo.SpringDataJpaRepo;
+package ru.spb.rtkdiary.Repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import ru.spb.rtkdiary.models.Grade;
 
 import java.util.List;

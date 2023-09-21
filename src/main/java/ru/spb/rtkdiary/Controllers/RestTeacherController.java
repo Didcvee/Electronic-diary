@@ -27,12 +27,12 @@ public class RestTeacherController {
     // Получить учителя по айди
     @GetMapping("/{id}")
     public ResponseEntity<TeacherDTOSHKA> findOneTeacher(@PathVariable("id") int id) {
-        return ResponseEntity.ok().body(teacherService.findOne(id));
+        return ResponseEntity.ok().body(teacherService.findOne(id)); //
     }
     // Отдаем все предметы+группы (будет фильтрация на фронте либо здесь)
     @GetMapping("/{id}/find")
     public ResponseEntity<List<GroupWithSubjects>> k3(@PathVariable("id") int id){
-        return ResponseEntity.ok().body(teacherService.getPackageWithGroupsAndSubjects(id));
+        return ResponseEntity.ok().body(teacherService.getPackageWithGroupsAndSubjects(id)); //
     }
     // Получение оценок по уникальности (учитель+группа+предмет+день недели (потому что учитель может вести разные группы+предметы в разные дни) ),
     // также либо здесь, либо на фронте будет делаться запрос по текущему месяцу и текущему году, также будет фильтрация по месяцу,
@@ -44,7 +44,7 @@ public class RestTeacherController {
                                                                            @PathVariable(name = "teacherId") int teacherId,
                                                                            @PathVariable(name = "Year") int year,
                                                                            @PathVariable(name = "Month") int month){
-        return ResponseEntity.ok().body(teacherService.getGradesByTeacherIdSubjectIdAndGroupId(teacherId,subjectId,groupId,year,month));
+        return ResponseEntity.ok().body(teacherService.getGradesByTeacherIdSubjectIdAndGroupId(teacherId,subjectId,groupId,year,month)); //
     }
     // Обновление пришедщих оценок
     @PutMapping("/updateGrade")

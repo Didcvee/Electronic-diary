@@ -1,6 +1,7 @@
 package ru.spb.rtkdiary.utils;
 
 public class GroupSubjectTeacherWeek {
+
     public int getSubjectId() {
         return subjectId;
     }

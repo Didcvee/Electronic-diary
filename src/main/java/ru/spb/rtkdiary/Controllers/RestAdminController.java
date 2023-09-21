@@ -3,14 +3,7 @@ package ru.spb.rtkdiary.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
-import ru.spb.rtkdiary.DAO.TeachersDTO;
-import ru.spb.rtkdiary.DTO.GradeDTO;
-import ru.spb.rtkdiary.DTO.GroupDTO;
-import ru.spb.rtkdiary.DTO.StudentDTO;
-import ru.spb.rtkdiary.DTO.SubjectsDTO;
-import ru.spb.rtkdiary.Request.GroupRequest;
-import ru.spb.rtkdiary.Request.SubjectRequest;
+import ru.spb.rtkdiary.DTO.*;
 import ru.spb.rtkdiary.Services.*;
 import ru.spb.rtkdiary.models.WeekDays;
 import ru.spb.rtkdiary.utils.GroupWithSubjects;
@@ -38,7 +31,7 @@ public class RestAdminController {
         this.studentsService = studentsService;
     }
 
-    //TODO---------------------------- GET ALL ---------------------------- GET ALL ----------------------------
+    //TODO ---------------------------- GET ALL ---------------------------- GET ALL ----------------------------
     @GetMapping("/findAllStudents")
     public ResponseEntity<List<StudentDTO>> findAllStudents(){
         return ResponseEntity.ok().body(studentsService.findAll());
@@ -54,35 +47,35 @@ public class RestAdminController {
     }
     @GetMapping("/findAllGroups")
     public ResponseEntity<List<GroupDTO>> findAllGroups() {
-        return ResponseEntity.ok().body(groupService.findAll());
+        return ResponseEntity.ok().body(groupService.findAll()); //
     }
     @GetMapping("/findAllWeeks")
     public ResponseEntity<List<WeekDays>> findAllWeeks(){
-        return ResponseEntity.ok().body(teacherService.findAllWeek());
+        return ResponseEntity.ok().body(teacherService.findAllWeek()); //
     }
 
-    //TODO---------------------------- GET BY ID ---------------------------- GET BY ID ----------------------------
+    //TODO ---------------------------- GET BY ID ---------------------------- GET BY ID ----------------------------
     @GetMapping("/students/{id}")
     public ResponseEntity<StudentDTO> findOneStudent(@PathVariable("id") int id){
-        return ResponseEntity.ok().body(studentsService.findById(id));
+        return ResponseEntity.ok().body(studentsService.findById(id)); //
     }
 
     @GetMapping("/teachers/{id}")
     public ResponseEntity<TeacherDTOSHKA> findOneTeacher(@PathVariable("id") int id) {
-        return ResponseEntity.ok().body(teacherService.findOne(id));
+        return ResponseEntity.ok().body(teacherService.findOne(id)); //
     }
     @GetMapping("/subjects/{id}")
     public ResponseEntity<SubjectsDTO> findOneSubject(@PathVariable("id") int id) {
-        return ResponseEntity.ok().body(subjectService.findById(id));
+        return ResponseEntity.ok().body(subjectService.findById(id)); //
     }
     @GetMapping("/groups/{id}")
     public ResponseEntity<GroupDTO> findOneGroup(@PathVariable("id") int id) {
-        return ResponseEntity.ok().body(groupService.findById(id));
+        return ResponseEntity.ok().body(groupService.findById(id)); //
     }
     // Отдаем все предметы+группы (будет фильтрация на фронте либо здесь)
     @GetMapping("/{id}/find")
     public ResponseEntity<List<GroupWithSubjects>> k3(@PathVariable("id") int id){
-        return ResponseEntity.ok().body(teacherService.getPackageWithGroupsAndSubjects(id));
+        return ResponseEntity.ok().body(teacherService.getPackageWithGroupsAndSubjects(id)); //
     }
     @GetMapping("/{teacherId}/{subjectId}/{groupId}/{Year}/{Month}")
     public ResponseEntity<ListWithStudentHisGradeAndDatesOfThisTeacher> k5(@PathVariable(name = "groupId") int groupId,
@@ -90,12 +83,14 @@ public class RestAdminController {
                                                                            @PathVariable(name = "teacherId") int teacherId,
                                                                            @PathVariable(name = "Year") int year,
                                                                            @PathVariable(name = "Month") int month){
-        return ResponseEntity.ok().body(teacherService.getGradesByTeacherIdSubjectIdAndGroupId(teacherId,subjectId,groupId,year,month));
+        return ResponseEntity.ok().body(teacherService.getGradesByTeacherIdSubjectIdAndGroupId(teacherId,subjectId,groupId,year,month)); //
     }
 
-    //TODO---------------------------- POST ---------------------------- POST ----------------------------
+    //TODO ---------------------------- POST ---------------------------- POST ----------------------------
     @PostMapping("/addStudent")
-    public void addStudent(@RequestBody StudentDTO studentDTO){studentsService.save(studentDTO);}
+    public void addStudent(@RequestBody StudentDTO studentDTO){
+        studentsService.save(studentDTO); //
+    }
     // ↓↓↓ Сюда должен прилетать json вида ↓↓↓
 //    {
 //        "name": "КОБИ БРАЯНТ",
@@ -105,8 +100,8 @@ public class RestAdminController {
 //    }
 
     @PostMapping("/addSubject")
-    public void addSubject(@RequestBody SubjectRequest subjectRequest) {
-        subjectService.save(subjectRequest);
+    public void addSubject(@RequestBody SubjectsDTO subjectsDTO) {
+        subjectService.save(subjectsDTO);//
     }
     // ↓↓↓ Сюда должен прилетать json вида ↓↓↓
 //    {
@@ -114,8 +109,8 @@ public class RestAdminController {
 //    }
 
     @PostMapping("/addGroup")
-    public void addGroup(@RequestBody GroupRequest groupRequest) {
-        groupService.save(groupRequest);
+    public void addGroup(@RequestBody GroupDTO groupDTO) {
+        groupService.save(groupDTO); //
     }
     // ↓↓↓ Сюда должен прилетать json вида ↓↓↓
 //    {
@@ -124,7 +119,7 @@ public class RestAdminController {
 
     @PostMapping("/addTeacher")
     public void addTeacher(@RequestBody TeacherDTOSHKA teacherDTOSHKA){
-        teacherService.save(teacherDTOSHKA);
+        teacherService.save(teacherDTOSHKA); //
     }
     // ↓↓↓ Сюда должен прилетать json вида ↓↓↓
 //    {
@@ -136,10 +131,10 @@ public class RestAdminController {
 //    }]
 //    }
 
-    //TODO---------------------------- PUT ---------------------------- PUT ----------------------------
+    //TODO ---------------------------- PUT ---------------------------- PUT ----------------------------
     @PutMapping("/updateStudent")
     public void updateStudent(@RequestBody StudentDTO studentDTO){
-        studentsService.update(studentDTO);
+        studentsService.update(studentDTO); //
     }
     // ↓↓↓ Сюда должен прилетать json вида ↓↓↓
 //    {
@@ -151,8 +146,8 @@ public class RestAdminController {
 //    }
 
     @PutMapping("/updateGroup")
-    public void updateGroup(@RequestBody GroupRequest groupRequest){
-        groupService.update(groupRequest);
+    public void updateGroup(@RequestBody GroupDTO groupDTO){
+        groupService.update(groupDTO); //
     }
     // ↓↓↓ Сюда должен прилетать json вида ↓↓↓
 //    {
@@ -160,8 +155,8 @@ public class RestAdminController {
 //            "name": "Е5ЕКЕ"
 //    }
     @PutMapping("/updateSubject")
-    public void updateSubject(@RequestBody SubjectRequest subjectRequest){
-        subjectService.update(subjectRequest);
+    public void updateSubject(@RequestBody SubjectsDTO subjectsDTO){
+        subjectService.update(subjectsDTO); //
     }
     // ↓↓↓ Сюда должен прилетать json вида ↓↓↓
 //    {
@@ -170,7 +165,7 @@ public class RestAdminController {
 //    }
     @PutMapping("/updateTeacher")
     public void updateTeacher(@RequestBody TeacherDTOSHKA teacherDTOSHKA){
-        teacherService.update(teacherDTOSHKA);
+        teacherService.update(teacherDTOSHKA); //
     }
     // ↓↓↓ Сюда должен прилетать json вида ↓↓↓
 //    {
@@ -185,7 +180,7 @@ public class RestAdminController {
 
     @PutMapping("/updateGrade")
     public void updateGrade(@RequestBody List<GradeDTO> gradeDTOList){
-        gradeService.updateSave(gradeDTOList);
+        gradeService.updateSave(gradeDTOList); //
     }
     // ↓↓↓ Сюда должен прилетать json вида ↓↓↓
 //    [
@@ -208,5 +203,23 @@ public class RestAdminController {
 //            "date": "01-09-2023"
 //    }
 //    ]
+    //TODO ---------------------------- DELETE ---------------------------- DELETE ----------------------------
+    //TODO ----- Каскадирование на стороне базы данных -----
+    @DeleteMapping("/deleteSubject")
+    public void deleteSubject(@RequestBody SubjectsDTO subjectsDTO){
+        subjectService.deleteSubject(subjectsDTO);
+    }
+    @DeleteMapping("/deleteGroup")
+    public void deleteGroup(@RequestBody GroupDTO groupDTO){
+        groupService.deleteGroup(groupDTO);
+    }
+    @DeleteMapping("/deleteTeacher")
+    public void deleteTeacher(@RequestBody TeachersDTO teachersDTO){
+        teacherService.deleteTeacher(teachersDTO);
+    }
+    @DeleteMapping("/deleteStudent")
+    public void deleteStudent(@RequestBody StudentDTO studentDTO){
+        studentsService.deleteStudent(studentDTO);
+    }
 
 }

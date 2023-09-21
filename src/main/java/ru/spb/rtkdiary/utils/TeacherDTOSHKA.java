@@ -3,6 +3,7 @@ package ru.spb.rtkdiary.utils;
 import java.util.List;
 
 public class TeacherDTOSHKA {
+
     private int id;
     private String name;
     private List<GroupSubjectTeacherWeek> groupSubjectTeacherWeekList;
