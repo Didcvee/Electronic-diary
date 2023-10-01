@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.spb.rtkdiary.DTO.*;
 import ru.spb.rtkdiary.Services.*;
 import ru.spb.rtkdiary.models.WeekDays;
-import ru.spb.rtkdiary.utils.GroupWithSubjects;
 import ru.spb.rtkdiary.utils.ListWithStudentHisGradeAndDatesOfThisTeacher;
 import ru.spb.rtkdiary.utils.TeacherDTOSHKA;
 
@@ -30,6 +29,7 @@ public class RestAdminController {
         this.gradeService = gradeService;
         this.studentsService = studentsService;
     }
+
 
     //TODO ---------------------------- GET ALL ---------------------------- GET ALL ----------------------------
     @GetMapping("/findAllStudents")
@@ -73,10 +73,7 @@ public class RestAdminController {
         return ResponseEntity.ok().body(groupService.findById(id)); //
     }
     // Отдаем все предметы+группы (будет фильтрация на фронте либо здесь)
-    @GetMapping("/{id}/find")
-    public ResponseEntity<List<GroupWithSubjects>> k3(@PathVariable("id") int id){
-        return ResponseEntity.ok().body(teacherService.getPackageWithGroupsAndSubjects(id)); //
-    }
+
     @GetMapping("/{teacherId}/{subjectId}/{groupId}/{Year}/{Month}")
     public ResponseEntity<ListWithStudentHisGradeAndDatesOfThisTeacher> k5(@PathVariable(name = "groupId") int groupId,
                                                                            @PathVariable(name = "subjectId") int subjectId,

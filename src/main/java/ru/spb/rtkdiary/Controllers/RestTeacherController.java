@@ -31,8 +31,8 @@ public class RestTeacherController {
     }
     // Отдаем все предметы+группы (будет фильтрация на фронте либо здесь)
     @GetMapping("/{id}/find")
-    public ResponseEntity<List<GroupWithSubjects>> k3(@PathVariable("id") int id){
-        return ResponseEntity.ok().body(teacherService.getPackageWithGroupsAndSubjects(id)); //
+    public ResponseEntity<TeacherDTOSHKA> k3(@PathVariable("id") int id){
+        return ResponseEntity.ok().body(teacherService.findOne(id)); //
     }
     // Получение оценок по уникальности (учитель+группа+предмет+день недели (потому что учитель может вести разные группы+предметы в разные дни) ),
     // также либо здесь, либо на фронте будет делаться запрос по текущему месяцу и текущему году, также будет фильтрация по месяцу,

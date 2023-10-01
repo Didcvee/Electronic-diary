@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.spb.rtkdiary.DTO.GroupDTO;
+import ru.spb.rtkdiary.Exception.UserNotFoundException;
 import ru.spb.rtkdiary.Repo.GroupRepository;
 import ru.spb.rtkdiary.models.Group;
 import ru.spb.rtkdiary.models.Peoples;
@@ -33,6 +34,7 @@ public class GroupService {
         List<GroupDTO> groupDTO = new ArrayList<>();
         groupRepository.findAll().forEach(group -> groupDTO
                 .add(new GroupDTO(group.getId(),group.getName())));
+        if(groupDTO.isEmpty()) throw new UserNotFoundException("Группы не найдены");
         return groupDTO; //
     }
     public GroupDTO findById(int id){
@@ -42,6 +44,7 @@ public class GroupService {
         GroupDTO groupDTO = new GroupDTO((Integer)objects.get(0)[1], (String)objects.get(0)[0]);
         objects.forEach(objects1 -> peoples.add(new Peoples((Integer) objects1[2],(String) objects1[3])));
         groupDTO.setPeoples(peoples);
+        if(groupDTO.getName()==null) throw new UserNotFoundException("Группы не найдены");
         return groupDTO; //
     }
     @Transactional

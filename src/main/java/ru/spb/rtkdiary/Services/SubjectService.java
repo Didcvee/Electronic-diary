@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.spb.rtkdiary.DTO.SubjectsDTO;
+import ru.spb.rtkdiary.Exception.UserNotFoundException;
 import ru.spb.rtkdiary.Repo.SubjectsRepository;
 import ru.spb.rtkdiary.models.Subjects;
 
@@ -32,10 +33,11 @@ public class SubjectService {
         List<SubjectsDTO> list = new ArrayList<>();
         subjectsRepository.findAll().forEach(subjects -> list
                 .add(new SubjectsDTO(subjects.getId(),subjects.getName())));
+        if(list.isEmpty()) throw new UserNotFoundException("Ничего не найдено");
         return list; //
     }
     public SubjectsDTO findById(int id){
-        Subjects subjects = subjectsRepository.findById(id).orElse(null);
+        Subjects subjects = subjectsRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Предиет не найден"));
         return new SubjectsDTO(subjects.getId(), subjects.getName()); //
     }
 
